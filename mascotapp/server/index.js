@@ -19,7 +19,7 @@ app.use(express.static('public'));
 
 // Validando que la url frontend se pueda revisar
 const corsOptions = {
-  origin: 'https://cuidadomascota.vercel.app', // URL de frontend
+  origin: 'https://mascotaland-flax.vercel.app', // URL de frontend
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 
