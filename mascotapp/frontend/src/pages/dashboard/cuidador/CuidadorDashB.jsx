@@ -1,0 +1,79 @@
+import DetailUserReserva from "../DetailUserReserva";
+import { getReservas } from "../../../services/serviceReserva";
+import { useEffect, useState } from "react";
+import moment from "moment";
+
+{/*CuidadorDashB responsive*/}
+const CuidadorDashB = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const handleData = async () => {
+      const res = await getReservas();
+      setData(res);
+    };
+    handleData();
+  }, []);
+
+  useEffect(() => {
+    if (data !== null) {
+      console.log(data);
+    }
+
+  }, [data]);
+    const userIdFromLocalStorage = localStorage.getItem('userId');
+    console.log(userIdFromLocalStorage)
+
+  return (
+    <section className="h-[100vh] flex flex-col justify-center mt-[3rem] w-[100%] p-5  text-[3vmin] sm:text-[10px] md:text-[10px] lg:text-[15px]">
+      <div className="lg:max-w-7xl mx-auto w-full gap-5">
+        <h2 className="h2 my-5 text-[8vmin] sm:text-[1.5rem] md:text-[2.5rem]">
+          Historial de reservas
+        </h2>
+        <div className="mb-5 flex justify-around bg-slate-200 py-5 px-7 gap-5 rounded-md overflow-y-scroll">
+          <p>Imagen</p>
+          <p>Nombre</p>
+          <span>Precio</span>
+          <p>Servicio</p>
+          <p>Fecha</p>
+          <p>Estado</p>
+        </div>
+        <div className="flex flex-col mx-auto lg:max-w-7xl bg-slate-200 p-10 rounded-xl gap-4 h-[65vh] overflow-hidden overflow-y-scroll">
+          {data.map(
+            (
+              {
+                cuidadorId,
+                precioDelServicio,
+                servicio,
+                fechaDelServicio,
+                estado,
+                _id,
+                usuarioId
+              },
+              index
+            ) => (
+              <div key={index}>
+              {console.log(cuidadorId._id === userIdFromLocalStorage)}
+{/* ._id === userIdFromLocalStorage */}
+                {cuidadorId._id === userIdFromLocalStorage && (
+                  <DetailUserReserva
+                    id={_id}
+                    imagen="https://cdn-icons-png.flaticon.com/512/6326/6326055.png"
+                    nombre={usuarioId.nombre}
+                    apellido={usuarioId.apellido}
+                    precio={precioDelServicio}
+                    servicio={servicio}
+                    fecha={moment(fechaDelServicio).format("YYYY-MM-DD")}
+                    estado={estado}
+                  />
+                )}
+              </div>
+            )
+          )}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default CuidadorDashB;
